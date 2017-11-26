@@ -3,6 +3,7 @@ from tkinter import *
 from tkinter import ttk
 import re
 
+import database_helper
 
 
 
@@ -82,3 +83,8 @@ root = Tk()
 app = GUI(root)
 app.create_text_area(60, 10)
 root.mainloop()
+
+wd = database_helper.WordCorrection()
+
+print(wd.select_like("nir"))
+
