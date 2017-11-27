@@ -4,7 +4,7 @@ from tkinter import ttk
 import re
 
 import database_helper
-
+import word_definition_helper
 
 class GUI:
     """class for gui"""
@@ -51,8 +51,10 @@ class GUI:
                     self.destroy_button()
                 self.word += char
                 self.create_button()
+                self.definition.forget()
             else:
                 self.word_dictionary.update(self.word)
+                self.get_definition()
                 self.word = ""
                 self.destroy_button()
         else:
@@ -128,6 +130,23 @@ class GUI:
                     return suggestions
             self.word = word_backspace
         return suggestions
+
+    def get_definition(self):
+        """ function to retrieve word definition and display on label"""
+        word_definition_curr = self.word_definition.select(self.word)
+        if not word_definition_curr:
+            word_definition_curr = word_definition_helper.get_word_definition(self.word)
+
+            if word_definition_curr is None:
+                self.definition.config(text="    Definition NOT FOUND")
+                self.definition.grid(row=6, columnspan=5, rowspan=3,sticky="n,e,s,w")
+            else:
+                self.word_definition.insert(self.word,word_definition_curr)
+        results = self.word_definition.select(self.word)
+        if results:
+            self.definition.config(text='    Definition:' + results[0][1])
+            self.definition.grid(row=6, columnspan=5, rowspan=3, sticky="n,e,s,w")
+
 
 
 
