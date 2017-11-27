@@ -50,9 +50,9 @@ class WordDicitionary(BaseDatabase):
         self.connection.commit()
 
 
-class Word_Definition_DB(BaseDatabase):
+class WordDefinition(BaseDatabase):
     def __init__(self, table="worddefinition", word="a"):
-        super(Word_Definition_DB, self).__init__(table, word)
+        super(WordDefinition, self).__init__(table, word)
         self.connection = sqlite3.connect('resources/database/wordui.db', timeout=1)
         self.cursor = self.connection.cursor()
 
@@ -89,7 +89,7 @@ class SentenceCompletion(BaseDatabase):
         sql = "select word2,sum(value) value from (\
                 select word2,value from n3gram where word1='{}'\
                 union\
-                select word3,value from n3gram where word2='{}'      ) group by word2 order by 2 desc""".format(
-            word, word)
+                select word3,value from n3gram where word2='{}')" \
+              " group by word2 order by 2 desc""".format(word, word)
         self.cursor.execute(sql)
         return self.cursor.fetchall()
